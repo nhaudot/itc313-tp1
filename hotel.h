@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "chambre.h"
+#include "bookingManager.h"
 
 
 
@@ -19,18 +20,21 @@ namespace hotels
 		std::string getCity() const;
 		std::vector<hotels::Chambre> getRoomList() const;
 
+		BookingManager& bookingManager() const;
+
 		void setName(const std::string name);
 		void setCity(const std::string city);
 
 		void addRoom(const hotels::Chambre newRoom);
 		void removeRoom(const std::string room);
 
-
+		BookingManager bkManager;
 	private:
 		std::string _uniqueID;
 		std::string _name;
 		std::string _city;
 		std::vector<hotels::Chambre> _roomListIDs;
+		
 	};
 	std::ostream& operator<<(std::ostream& os, const Hotel& hotel);
 }

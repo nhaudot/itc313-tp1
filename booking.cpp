@@ -5,8 +5,8 @@
 namespace hotels
 {
 	
-	Booking::Booking(const int id, const date::Date beginDate, const date::Date leftDate, const int hotelID, const int roomID, const int clientID, const float price)
-	: _uniqueID(id), _beginDate(beginDate), _leftDate(leftDate), _hotelID(hotelID), _roomID(roomID), _clientID(clientID), _price(price)
+	Booking::Booking(const int id, const date::Date beginDate, const date::Date leftDate, const int roomID, const int clientID, const float price)
+	: _uniqueID(id), _beginDate(beginDate), _leftDate(leftDate), _roomID(roomID), _clientID(clientID), _price(price)
 	{
 
 	}
@@ -26,11 +26,6 @@ namespace hotels
 		return _leftDate;
 	}
 
-	int Booking::getHotelID() const
-	{
-		return _hotelID;
-	}
-
 	int Booking::getRoomID() const
 	{
 		return _roomID;
@@ -46,11 +41,6 @@ namespace hotels
 		return _price;
 	}
 
-	float Booking::getTotalPrice() const
-	{
-		return _price * 2;
-	}
-
 	void Booking::setBeginDate(const date::Date beginDate)
 	{
 		_beginDate = beginDate;
@@ -59,11 +49,6 @@ namespace hotels
 	void Booking::getLeftDate(const date::Date leftDate)
 	{
 		_leftDate = leftDate;
-	}
-
-	void Booking::setHotelID(const int id)
-	{
-		_hotelID = id;
 	}
 
 	void Booking::setRoomID(const int id)

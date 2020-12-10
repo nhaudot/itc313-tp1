@@ -11,7 +11,12 @@ namespace hotels
 
 	void BookingManager::showBookings() const
 	{
+		std::cout << "Show bookings" << std::endl << std::endl;
 
+		for(int i = 0; i < bookingList.size(); i++)
+		{
+			std::cout << bookingList[i].getID() << " - " << bookingList[i].getBeginDate().toString() << " - " << bookingList[i].getLeftDate().toString() << " - " << bookingList[i].getRoomID() << " - " << bookingList[i].getClientID() << " - " << bookingList[i].getPrice() << " - " << std::endl;
+		}
 	}
 
 	void BookingManager::showBooking(int id) const
@@ -44,7 +49,32 @@ namespace hotels
 
 	}
 
+	bool BookingManager::checkBooking(int numChambreSelected, date::Date& startDate, date::Date& endDate) const
+	{
+		bool check = false;
 
+		for(int i = 0; i < bookingList.size(); i++)
+		{
+        	if (bookingList[i].getRoomID() == numChambreSelected)
+        	{
+        		if (bookingList[i].getBeginDate() > endDate)
+        		{
+        			check = true;
+        		}
+        		else if (startDate > bookingList[i].getLeftDate())
+        		{
+        			check = true;
+        		}
+        	}
+        	else
+        	{
+        		// La chambre n'est pas dans les résas de l'hôtel
+        		check = true;
+        	}
+		}
+
+		return check;
+	}
 
 
 

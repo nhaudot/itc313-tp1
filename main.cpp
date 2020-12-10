@@ -59,6 +59,15 @@ int main()
 	customersList.push_back(hotels::Client(8, "Emmanuel", "Macron"));
 	customersList.push_back(hotels::Client(9, "Donald", "Trump"));
 
+	// Book ID int
+	int bookID = 0;
+
+	// On crée des résas en avance pour les tests
+	date::Date sd1(2020,12,10);
+	date::Date ed1(2020,12,12);
+	hotels::Booking myBook(bookID, sd1, ed1, 9, 9, 2000.0);
+	monHotel.bkManager.addBooking(myBook);
+
 
 	// QUESTION 6D
 	std::cout << customersList[4];
@@ -73,7 +82,7 @@ int main()
 
 		// QUESTION 7A
 
-		//début séjour
+		// Début séjour
 		int year1;
 		int month1;
 		int day1;
@@ -115,9 +124,6 @@ int main()
 			endDate.setMonth(month2);
 			endDate.setDay(day2);
 
-			//date::Date startDate(year1,month1,day1);
-			//date::Date endDate(year2,month2,day2);
-
 			// QUESTION 7B
 			if (endDate.checkDate(month1,day1) && startDate.checkDate(month2,day2) && endDate>startDate)
 			{
@@ -144,44 +150,45 @@ int main()
 
 			if (typeChambre <= 2 && typeChambre >= 0)
 			{
+
+
+
+
+
+
+
+
 				// QUESTION 8B
+
 				int trouve = 0;
 				// On parcourt les chambres pour savoir si elles sont dispos
 				for (int i = 0; i < monHotel.getRoomList().size(); i++)
 				{
 					if (monHotel.getRoomList()[i].getType() == typeChambre)
 					{
-					
+						bool test = monHotel.bkManager.checkBooking(monHotel.getRoomList()[i].getId(), startDate, endDate);
 
-
-						// Pas fini (8B) pour VERIFIER les chambres avec les résas
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-						// La chambre est dispo
-						std::cout << "La chambre " << monHotel.getRoomList()[i].getId() << " est disponible." << std::endl;
-						trouve = 1;
-						typeChambreBool = true;
+						if (test == true)
+						{
+							// La chambre est dispo
+							std::cout << "La chambre " << monHotel.getRoomList()[i].getId() << " est disponible." << std::endl;
+							trouve = 1;
+							typeChambreBool = true;
+						}
 					}
 				}
+
+
+
+
+
+
+
+
+
+
+
+
 				// QUESTION 8C
 				if (trouve == 0)
 				{
@@ -191,7 +198,6 @@ int main()
 					std::cout << "Sélectionner le numéro de chambre souhaité: ";
 					std::cin >> numChambreSelected;
 					std::cout << "Vous avez sélectionné la chambre " << numChambreSelected << std::endl;
-
 				}
 			
 			}
@@ -235,9 +241,12 @@ int main()
 		std::cout << "Prix total du séjour: " << price << "€" << std::endl;
 
 
+		// On ajoute la résa à la liste de réservations de l'hôtel
+		bookID++;
+		hotels::Booking myNewBook(bookID, startDate, endDate, numChambreSelected, customersList[clientOkID[selectedClient]].getID(), price);
+		monHotel.bkManager.addBooking(myNewBook);
 
-
-
+		monHotel.bkManager.showBookings();
 
 	}
 

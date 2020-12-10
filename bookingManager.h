@@ -20,7 +20,7 @@ namespace hotels
 		void addBooking(Booking& newBooking);
 		void editBooking(int id);
 		void cancelBooking(int id);
-		bool checkBooking(int numChambreSelected, Date& startDate, Date& endDate);
+		bool checkBooking(int numChambreSelected, date::Date& startDate, date::Date& endDate) const;
 	private:
 		std::vector<Booking> bookingList;
 	};
