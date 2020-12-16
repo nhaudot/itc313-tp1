@@ -11,11 +11,11 @@ namespace hotels
 
 	void BookingManager::showBookings() const
 	{
-		std::cout << "Show bookings" << std::endl << std::endl;
+		std::cout << "Liste des réservations: " << std::endl << std::endl;
 
 		for(int i = 0; i < bookingList.size(); i++)
 		{
-			std::cout << bookingList[i].getID() << " - " << bookingList[i].getBeginDate().toString() << " - " << bookingList[i].getLeftDate().toString() << " - " << bookingList[i].getRoomID() << " - " << bookingList[i].getClientID() << " - " << bookingList[i].getPrice() << " - " << std::endl;
+			std::cout << "[" << bookingList[i].getID() << "] " << bookingList[i].getBeginDate().toString() << " -> " << bookingList[i].getLeftDate().toString() << " | Chambre n." << bookingList[i].getRoomID() << " | Client n." << bookingList[i].getClientID() << " | Prix total: " << bookingList[i].getPrice() << "€" << std::endl;
 		}
 	}
 
@@ -51,31 +51,31 @@ namespace hotels
 
 	bool BookingManager::checkBooking(int numChambreSelected, date::Date& startDate, date::Date& endDate) const
 	{
-		bool check = false;
+		bool checkResa = false;
+		bool checkRoom = false;
 
-		for(int i = 0; i < bookingList.size(); i++)
+		for (int i = 0; i < bookingList.size(); i++)
 		{
-        	if (bookingList[i].getRoomID() == numChambreSelected)
-        	{
-        		if (bookingList[i].getBeginDate() > endDate)
-        		{
-        			check = true;
-        		}
-        		else if (startDate > bookingList[i].getLeftDate())
-        		{
-        			check = true;
-        		}
-        	}
-        	else
-        	{
-        		// La chambre n'est pas dans les résas de l'hôtel
-        		check = true;
-        	}
+			if (bookingList[i].getRoomID() == numChambreSelected)
+			{
+				checkRoom = true;
+
+				if (bookingList[i].getBeginDate() > endDate)
+				{
+					checkResa = true;
+				}
+				else if (startDate > bookingList[i].getLeftDate())
+				{
+					checkResa = true;
+				}
+			}
 		}
 
-		return check;
+		if (checkRoom == false)
+		{
+			checkResa = true;
+		}
+ 
+        return checkResa;
 	}
-
-
-
 }

@@ -125,10 +125,12 @@ int main()
 			endDate.setDay(day2);
 
 			// QUESTION 7B
-			if (endDate.checkDate(month1,day1) && startDate.checkDate(month2,day2) && endDate>startDate)
+
+			tailleSejourComplet = endDate - startDate;
+
+			if (endDate.checkDate(month1,day1) && startDate.checkDate(month2,day2) && tailleSejourComplet > 0)
 			{
 				flag = false;
-				tailleSejourComplet = endDate - startDate;
 				std::cout << "Taille du séjour: " << tailleSejourComplet << " jours" << std::endl;
 			}
 			else
@@ -245,6 +247,8 @@ int main()
 		bookID++;
 		hotels::Booking myNewBook(bookID, startDate, endDate, numChambreSelected, customersList[clientOkID[selectedClient]].getID(), price);
 		monHotel.bkManager.addBooking(myNewBook);
+
+		std::cout << std::endl;
 
 		monHotel.bkManager.showBookings();
 

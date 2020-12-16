@@ -37,7 +37,41 @@ namespace date
 
 	void Date::nextDay()
 	{
-		setDay(getDay() + 1);
+		// Changement de mois/année
+		if (getMonth() == 12 && getDay() == 31)
+		{
+			setYear(getYear() + 1);
+			setMonth(1);
+			setDay(1);
+		}
+		else if (getDay() == 31)
+		{
+			if (getMonth() == 1 || getMonth() == 3 || getMonth() == 5 || getMonth() == 7 || getMonth() == 8 || getMonth() == 10 || getMonth() == 12)
+			{
+				setMonth(getMonth() + 1);
+				setDay(1);
+			}
+		}
+		else if (getDay() == 30)
+		{
+			if (getMonth() == 2 || getMonth() == 4 || getMonth() == 6 || getMonth() == 9 || getMonth() == 11)
+			{
+				setMonth(getMonth() + 1);
+				setDay(1);
+			} else
+			{
+				setDay(getDay() + 1);
+			}
+		}
+		else if (getDay() == 28 && getMonth() == 2)
+		{
+				setMonth(getMonth() + 1);
+				setDay(1);
+		}
+		else
+		{
+			setDay(getDay() + 1);
+		}
 	}
 
 	void Date::setMonth(int month)
@@ -93,23 +127,12 @@ namespace date
 	{
 		bool status = true;
 
-		if (getYear() < compareDate.getYear())
+		int val1 = (getYear() * 10000) + (getMonth() * 100) + getDay();
+		int val2 = (compareDate.getYear() * 10000) + (compareDate.getMonth() * 100) + compareDate.getDay();
+
+		if (val1 < val2)
 		{
 			status = false;
-		}
-		else
-		{
-			if (getMonth() < compareDate.getMonth())
-			{
-				status = false;
-			}
-			else
-			{
-				if (getDay() <= compareDate.getDay())
-				{
-					status = false;
-				}
-			}
 		}
 
 		return status;
@@ -156,7 +179,6 @@ namespace date
 		{
 			null = true;
 		}
-
 		else if (*this > date2)
 		{
 			lowerDate = date2;
@@ -168,7 +190,6 @@ namespace date
 			higherDate = date2;
 			negative = true;
 		}
-
 
 		// Comptage de la différence en  valeur absolue
 		while (higherDate > lowerDate && null == false)
