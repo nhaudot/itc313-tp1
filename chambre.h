@@ -5,28 +5,24 @@
 
 namespace hotels
 {
-	enum roomType { Single , Double , Suite , Cave };
+	enum typeChambre { Single , Double , Suite };
 
 	class Chambre
 	{
 	public:
-		//Constructeur
-		Chambre(int id, roomType type, float price);
-		//Getters
-		int getId() const;
-		roomType getType() const;
-		float getPrice() const;
-		//Setters
-		void setId(const int id);
-		void setType(const roomType type);
-		void setPrice(const float price);
-
+		Chambre(int ID, typeChambre type, float prix);
+		int ID() const;
+		typeChambre type() const;
+		float prix() const;
+		void setID(const int ID);
+		void setType(const typeChambre type);
+		void setPrix(const float price);
 	private:
-		//Varibales Membres
-		int _id;
-		roomType _type;
-		float _price;
+		int _ID;
+		typeChambre _type;
+		float _prix;
 	};
+
 	std::ostream& operator<<(std::ostream& os, const Chambre& chambre);
 }
 #endif

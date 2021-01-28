@@ -1,347 +1,615 @@
 #include <iostream>
-#include "client.h"
-#include "chambre.h"
+#include "date.h"
 #include "hotel.h"
+#include "client.h"
 #include "booking.h"
 
-
+using namespace hotels;
 
 int main()
 {
-	// QUESTION 6A
-	std::cout << "On crée notre hôtel" << std::endl << std::endl;
-	hotels::Hotel monHotel("OCEAN11", "Le Bellagio", "Las Vegas");
+	system("clear");
 
-	// Création des chambres SINGLE
-	hotels::Chambre chambre0(0, hotels::Single, 100);
-	monHotel.addRoom(chambre0);
-	hotels::Chambre chambre1(1, hotels::Single, 100);
-	monHotel.addRoom(chambre1);
-	hotels::Chambre chambre2(2, hotels::Single, 100);
-	monHotel.addRoom(chambre2);
-
-	// Création des chambres DOUBLE
-	hotels::Chambre chambre3(3, hotels::Double, 125);
-	monHotel.addRoom(chambre3);
-	hotels::Chambre chambre4(4, hotels::Double, 125);
-	monHotel.addRoom(chambre4);
-	hotels::Chambre chambre5(5, hotels::Double, 125);
-	monHotel.addRoom(chambre5);
-	hotels::Chambre chambre6(6, hotels::Double, 125);
-	monHotel.addRoom(chambre6);
-	hotels::Chambre chambre7(7, hotels::Double, 125);
-	monHotel.addRoom(chambre7);
-
-	// Création des chambres SUITE
-	hotels::Chambre chambre8(8, hotels::Suite, 210);
-	monHotel.addRoom(chambre8);
-	hotels::Chambre chambre9(9, hotels::Suite, 210);
-	monHotel.addRoom(chambre9);
-
-	std::cout << "Nombre de chambres: " << monHotel.getRoomList().size() << std::endl << std::endl;
-
-
-	// QUESTION 6B
-	std::cout << chambre0 << std::endl;
-	std::cout << monHotel << std::endl;
-
-
-	// QUESTION 6C
-	std::vector <hotels::Client> customersList;
-	customersList.push_back(hotels::Client(0, "Robert", "Lafondu"));
-	customersList.push_back(hotels::Client(1, "Jeannine", "Lafondu"));
-	customersList.push_back(hotels::Client(2, "Fatal", "Bazooka"));
-	customersList.push_back(hotels::Client(3, "Hugo", "Alexandre"));
-	customersList.push_back(hotels::Client(4, "Martin", "Fourcade"));
-	customersList.push_back(hotels::Client(5, "James", "Bond"));
-	customersList.push_back(hotels::Client(6, "Harry", "Potter"));
-	customersList.push_back(hotels::Client(7, "Jean", "Bon"));
-	customersList.push_back(hotels::Client(8, "Emmanuel", "Macron"));
-	customersList.push_back(hotels::Client(9, "Donald", "Trump"));
-
-	// Book ID int
+	// Variables console
+	std::vector<Hotel> listeHotels;
+	std::vector<Client> listeClients;
+	bool boucle = true;
+	std::string commande;
+	std::string hotelSelectionne = std::to_string(-1);
 	int bookID = 0;
 
-	// On crée des résas en avance pour les tests
-	date::Date sd1(2020,12,10);
-	date::Date ed1(2020,12,12);
-	hotels::Booking myBook(bookID, sd1, ed1, 9, 9, 2000.0);
-	monHotel.bkManager.addBooking(myBook);
+	std::cout << "HOSTEL MANAGER" << std::endl << std::endl;
 
-
-	// QUESTION 6D
-	std::cout << customersList[4];
-
-	std::cout << std::endl << "___________________________________" << std::endl << std::endl;
-
-
-	// Boucle infinie du programme pour entrer constamment des résas
-	while(true)
+	while (boucle == true)
 	{
-		std::cout << std::endl << "___________________________________" << std::endl << std::endl;
+		std::cout << ">";
+		std::getline(std::cin, commande);
 
-		// QUESTION 7A
-
-		// Début séjour
-		int year1;
-		int month1;
-		int day1;
-
-		// Fin séjour
-		int year2;
-		int month2;
-		int day2;
-
-		int tailleSejourComplet;
-
-		date::Date startDate;
-		date::Date endDate;
-
-		bool flag = true;
-		while (flag == true)
+		// Supprime les espaces en trop
+		bool trimEnd = false;
+		while (trimEnd == false)
 		{
-			// Paramètres début séjour
-			std::cout << "Entrer une année de début de séjour : ";
-			std::cin >> year1;
-			std::cout << "Entrer un mois de début de séjour : ";
-			std::cin >> month1;
-			std::cout << "Entrer une journée de début de séjour : ";
-			std::cin >> day1;
-
-			//paramètres fin séjour
-			std::cout << "Entrer une année de fin de séjour : ";
-			std::cin >> year2;
-			std::cout << "Entrer un mois de fin de séjour : ";
-			std::cin >> month2;
-			std::cout << "Entrer une journée de fin de séjour : ";
-			std::cin >> day2;
-
-			startDate.setYear(year1);
-			startDate.setMonth(month1);
-			startDate.setDay(day1);
-
-			endDate.setYear(year2);
-			endDate.setMonth(month2);
-			endDate.setDay(day2);
-
-			// QUESTION 7B
-
-			tailleSejourComplet = endDate - startDate;
-
-			if (endDate.checkDate(month1,day1) && startDate.checkDate(month2,day2) && tailleSejourComplet > 0)
+			if (commande.back() == ' ')
 			{
-				flag = false;
-				std::cout << "Taille du séjour: " << tailleSejourComplet << " jours" << std::endl;
+				commande = commande.substr(0, commande.size()-1);
 			}
 			else
 			{
-				std::cout << "Dates invalides, veuillez recommencer la saisie avec des dates valides." << std::endl;
+				trimEnd = true;
 			}
 		}
 
-
-		// QUESTION 8A
-		int numChambreSelected;
-		bool typeChambreBool = false;
-
-		while (typeChambreBool == false)
+		// ### LISTE DES COMMANDES ###
+		// Quitter
+		if (commande == "exit")
 		{
-			std::cout << "Saisissez le type de chambre souhaité (0 = simple, 1 = double, 2 = suite): ";
-			int typeChambre;
-			std::cin >> typeChambre;
+			std::cout << "Good bye !" << std::endl;
+			boucle = false;
+		}
+		// Ajouter un hôtel
+		else if (commande == "hostel add")
+		{
+			std::string nom;
+			std::string id;
+			std::string ville;
 
-			if (typeChambre <= 2 && typeChambre >= 0)
+			std::cout << "Hostel's name : ";
+			std::getline(std::cin, nom);
+			std::cout << "Hostel's ID : ";
+			std::getline(std::cin, id);
+			std::cout << "City : ";
+			std::getline(std::cin, ville);
+
+			Hotel nouvelHotel(id, nom, ville);
+			listeHotels.push_back(nouvelHotel);
+
+			std::cout << "Hostel added!" << std::endl << std::endl;
+		}
+		// Lister les hôtels
+		else if (commande == "hostel list")
+		{
+			if (listeHotels.size() == 0)
 			{
-
-
-
-
-
-
-
-
-				// QUESTION 8B
-
-				int trouve = 0;
-				// On parcourt les chambres pour savoir si elles sont dispos
-				for (int i = 0; i < monHotel.getRoomList().size(); i++)
+				std::cout << "No hostel available" << std::endl << std::endl;
+			}
+			else
+			{
+				for (int i = 0; i < listeHotels.size(); i++)
 				{
-					if (monHotel.getRoomList()[i].getType() == typeChambre)
-					{
-						bool test = monHotel.bkManager.checkBooking(monHotel.getRoomList()[i].getId(), startDate, endDate);
+					std::cout << i << " - " << listeHotels[i] << std::endl;
+				}
+				std::cout << std::endl;
+			}
+		}
+		// Supprimer un hôtel
+		else if (commande == "hostel remove")
+		{
+			if (listeHotels.size() == 0)
+			{
+				std::cout << "No hostel available" << std::endl << std::endl;
+			}
+			else
+			{
+				for (int i = 0; i < listeHotels.size(); i++)
+				{
+					std::cout << i << " - " << listeHotels[i] << std::endl;
+				}
+				std::cout << std::endl << "Select an hostel by its ID : ";
 
-						if (test == true)
-						{
-							// La chambre est dispo
-							std::cout << "La chambre " << monHotel.getRoomList()[i].getId() << " est disponible." << std::endl;
-							trouve = 1;
-							typeChambreBool = true;
-						}
+				std::string hotelToRemove;
+				std::getline(std::cin, hotelToRemove);
+				listeHotels.erase(listeHotels.begin() + std::stoi(hotelToRemove));
+				hotelSelectionne = std::to_string(-1);
+
+				std::cout << "Hostel removed." << std::endl << "No selected hostel" << std::endl << std::endl;
+			}
+		}
+		// Sélectionner un hôtel
+		else if (commande == "hostel select")
+		{
+			if (listeHotels.size() == 0)
+			{
+				std::cout << "No hostel available" << std::endl << std::endl;
+			}
+			else
+			{
+				for (int i = 0; i < listeHotels.size(); i++)
+				{
+					std::cout << i << " - " << listeHotels[i] << std::endl;
+				}
+				std::cout << std::endl << "Select an hostel by its ID : ";
+				std::getline(std::cin, hotelSelectionne);
+				std::cout << "Hostel n." << hotelSelectionne << " selected." << std::endl << std::endl;
+			}
+		}
+		// Retourne l'hôtel sélectionné
+		else if (commande == "hostel current")
+		{
+			if (std::stoi(hotelSelectionne) == -1)
+			{
+				std::cout << "No selected hostel" << std::endl << std::endl;
+			}
+			else
+			{
+				std::cout << "Selected hostel : " << hotelSelectionne << std::endl << std::endl;
+			}
+		}
+		// Ajouter une chambre
+		else if (commande == "room add")
+		{
+			if (std::stoi(hotelSelectionne) == -1)
+			{
+				std::cout << "No selected hostel" << std::endl;
+			}
+			else
+			{
+				std::cout << "0 - Single" << std::endl;
+				std::cout << "1 - Double" << std::endl;
+				std::cout << "2 - Suite" << std::endl << std::endl;
+				std::cout << "Room's type (number) : ";
+				std::string type;
+				std::getline(std::cin, type);
+
+				std::string prix;
+				std::cout << "Room's price : ";
+				std::getline(std::cin, prix);
+
+				if (std::stoi(type) == 0)
+				{
+					listeHotels[std::stoi(hotelSelectionne)].ajouterChambre(hotels::typeChambre::Single, std::stoi(prix));
+					std::cout << "Room added!" << std::endl;
+				}
+				else if (std::stoi(type) == 1)
+				{
+					listeHotels[std::stoi(hotelSelectionne)].ajouterChambre(hotels::typeChambre::Double, std::stoi(prix));
+					std::cout << "Room added!" << std::endl;
+				}
+				else if (std::stoi(type) == 2)
+				{
+					listeHotels[std::stoi(hotelSelectionne)].ajouterChambre(hotels::typeChambre::Suite, std::stoi(prix));
+					std::cout << "Room added!" << std::endl;
+				}
+				else
+				{
+					std::cout << "Please select a valid type room" << std::endl;
+				}
+			}
+			std::cout << std::endl;
+		}
+		// Lister les chambres
+		else if (commande == "room list")
+		{
+			if (std::stoi(hotelSelectionne) == -1)
+			{
+				std::cout << "No selected hostel" << std::endl;
+			}
+			else if (listeHotels[std::stoi(hotelSelectionne)].listeChambres().size() == 0)
+			{
+				std::cout << "No room available" << std::endl;
+			} 
+			else
+			{
+				for (int i = 0; i < listeHotels[std::stoi(hotelSelectionne)].listeChambres().size(); i++)
+				{
+					std::cout << i << " - " << listeHotels[std::stoi(hotelSelectionne)].listeChambres()[i];
+				}
+			}
+			std::cout << std::endl;
+		}
+		// Editer une chambre
+		else if (commande == "room edit")
+		{
+			if (std::stoi(hotelSelectionne) == -1)
+			{
+				std::cout << "No selected hostel" << std::endl;
+			}
+			else if (listeHotels[std::stoi(hotelSelectionne)].listeChambres().size() == 0)
+			{
+				std::cout << "No room available" << std::endl;
+			} 
+			else
+			{
+				for (int i = 0; i < listeHotels[std::stoi(hotelSelectionne)].listeChambres().size(); i++)
+				{
+					std::cout << i << " - " << listeHotels[std::stoi(hotelSelectionne)].listeChambres()[i];
+				}
+			}
+			std::cout << std::endl << "Select a room by its ID : ";
+
+			std::string roomToEdit;
+			std::getline(std::cin, roomToEdit);
+
+			std::string type;
+			std::string prix;
+
+			
+			bool validType = false;
+			while (validType == false)
+			{
+				std::cout << std::endl << "0 - Single" << std::endl;
+				std::cout << "1 - Double" << std::endl;
+				std::cout << "2 - Suite" << std::endl << std::endl;
+				std::cout << "New room's type (number) : ";
+				std::getline(std::cin, type);
+
+				if (std::stoi(type) == 0 || std::stoi(type) == 1 || std::stoi(type) == 2)
+				{
+					validType = true;
+				}
+				else
+				{
+					std::cout << std::endl << "Please select a valid type room." << std::endl;
+				}
+			}
+			
+			std::cout << "New room's price : ";
+			std::getline(std::cin, prix);
+
+			listeHotels[std::stoi(hotelSelectionne)].editerChambre(std::stoi(roomToEdit), std::stoi(type), std::stof(prix));
+			std::cout << "Room edited!" << std::endl << std::endl;
+		}
+		// Supprimer une chambre
+		else if (commande == "room remove")
+		{
+			if (std::stoi(hotelSelectionne) == -1)
+			{
+				std::cout << "No selected hostel" << std::endl;
+			}
+			else if (listeHotels[std::stoi(hotelSelectionne)].listeChambres().size() == 0)
+			{
+				std::cout << "No room available." << std::endl;
+			} 
+			else
+			{
+				for (int i = 0; i < listeHotels[std::stoi(hotelSelectionne)].listeChambres().size(); i++)
+				{
+					std::cout << i << " - " << listeHotels[std::stoi(hotelSelectionne)].listeChambres()[i];
+				}
+				std::cout << std::endl << "Select a room by its ID : ";
+				std::string roomToRemove;
+				std::getline(std::cin, roomToRemove);
+				listeHotels[std::stoi(hotelSelectionne)].supprimerChambre(std::stoi(roomToRemove));
+
+				std::cout << "Room removed." << std::endl;
+			}
+			std::cout << std::endl;
+		}
+		// Ajouter un client
+		else if (commande == "client add")
+		{
+			std::string nom;
+			std::string prenom;
+
+			std::cout << "First name : ";
+			std::getline(std::cin, nom);
+			std::cout << "Last name : ";
+			std::getline(std::cin, prenom);
+
+			Client nouveauClient(listeClients.size() + 1, nom, prenom);
+			listeClients.push_back(nouveauClient);
+
+			std::cout << "Client added!" << std::endl << std::endl;
+		}
+		// Lister les clients
+		else if (commande == "client list")
+		{
+			if (listeClients.size() == 0)
+			{
+				std::cout << "No client available" << std::endl << std::endl;
+			}
+			else
+			{
+				for (int i = 0; i < listeClients.size(); i++)
+				{
+					std::cout << i << " - " << listeClients[i];
+				}
+				std::cout << std::endl;
+			}
+		}
+		// Editer un client
+		else if (commande == "client edit")
+		{
+			if (listeClients.size() == 0)
+			{
+				std::cout << "No client available" << std::endl << std::endl;
+			}
+			else
+			{
+				for (int i = 0; i < listeClients.size(); i++)
+				{
+					std::cout << i << " - " << listeClients[i];
+				}
+				std::cout << std::endl << "Select a client by its ID : ";
+
+				std::string clientToEdit;
+				std::getline(std::cin, clientToEdit);
+
+				std::string prenom;
+				std::string nom;
+
+				std::cout << "First name : ";
+				std::getline(std::cin, prenom);
+				std::cout << "Last name : ";
+				std::getline(std::cin, nom);
+
+				listeClients[std::stoi(clientToEdit)].setNom(nom);
+				listeClients[std::stoi(clientToEdit)].setPrenom(prenom);
+
+				std::cout << "Client edited!" << std::endl << std::endl;
+			}
+		}
+		// Supprimer un client
+		else if (commande == "client remove")
+		{
+			if (listeClients.size() == 0)
+			{
+				std::cout << "No client available" << std::endl << std::endl;
+			}
+			else
+			{
+				for (int i = 0; i < listeClients.size(); i++)
+				{
+					std::cout << i << " - " << listeClients[i];
+				}
+				std::cout << std::endl << "Select a client by its ID : ";
+
+				std::string clientToRemove;
+				std::getline(std::cin, clientToRemove);
+				listeClients.erase(listeClients.begin() + std::stoi(clientToRemove));
+
+				std::cout << "Client removed." << std::endl << std::endl;
+			}
+		}
+		// Faire une réservation
+		else if (commande == "booking make")
+		{
+			if (std::stoi(hotelSelectionne) == -1)
+			{
+				std::cout << "No selected hostel" << std::endl;
+			}
+			else if (listeHotels[std::stoi(hotelSelectionne)].listeChambres().size() == 0)
+			{
+				std::cout << "No room available for the selected hostel." << std::endl;
+			} 
+			else
+			{
+				// Paramètres de la réservation
+				std::string yearBegin, monthBegin, dayBegin, yearEnd, monthEnd, dayEnd;
+				int tailleSejourComplet;
+
+				// Création des dates
+				date::Date beginDate;
+				date::Date endDate;
+
+				bool dateValide = false;
+				while (dateValide == false)
+				{
+					std::cout << "Enter a year of start of stay : ";
+					std::getline(std::cin, yearBegin);
+					beginDate.setYear(std::stoi(yearBegin));
+					std::cout << "Enter a month of start of stay : ";
+					std::getline(std::cin, monthBegin);
+					beginDate.setMonth(std::stoi(monthBegin));
+					std::cout << "Enter a day of start of stay : ";
+					std::getline(std::cin, dayBegin);
+					beginDate.setDay(std::stoi(dayBegin));
+
+					std::cout << "Enter a year of end of stay : ";
+					std::getline(std::cin, yearEnd);
+					endDate.setYear(std::stoi(yearEnd));
+					std::cout << "Enter a month of end of stay : ";
+					std::getline(std::cin, monthEnd);
+					endDate.setMonth(std::stoi(monthEnd));
+					std::cout << "Enter a day of end of stay : ";
+					std::getline(std::cin, dayEnd);
+					endDate.setDay(std::stoi(dayEnd));
+
+					tailleSejourComplet = endDate - beginDate;
+
+					// Calcul nombre de nuits
+					if (endDate.checkDate(std::stoi(monthEnd), std::stoi(dayEnd)) && beginDate.checkDate(std::stoi(monthBegin), std::stoi(dayBegin)) && endDate > beginDate)
+					{
+						dateValide = true;
+						std::cout << std::endl << "Stay size : " << tailleSejourComplet << " days" << std::endl << std::endl;
+					}
+					else
+					{
+						std::cout << "Invalid dates, please retype them." << std::endl;
 					}
 				}
 
-
-
-
-
-
-
-
-
-
-
-
-				// QUESTION 8C
-				if (trouve == 0)
+				// Recherche si chambre dispo
+				std::string numChambreSelected;
+				bool typeChambreBool = false;
+				while (typeChambreBool == false)
 				{
-					std::cout << "Le type de chambre n'est pas disponible." << std::endl;
-				} else
-				{
-					std::cout << "Sélectionner le numéro de chambre souhaité: ";
-					std::cin >> numChambreSelected;
-					std::cout << "Vous avez sélectionné la chambre " << numChambreSelected << std::endl;
-				}
+					std::cout << "Enter the desired room type (0 = Simple, 1 = Double, 2 = Suite) : ";
+					std::string typeDeChambre;
+					std::getline(std::cin, typeDeChambre);
+
+					std::cout << std::endl;
+
+					if (std::stoi(typeDeChambre) <= 2 && std::stoi(typeDeChambre) >= 0)
+					{
+						int trouve = 0;
+						// On parcourt les chambres pour savoir si elles sont dispos
+						for (int i = 0; i < listeHotels[std::stoi(hotelSelectionne)].listeChambres().size(); i++)
+						{
+							if (std::stoi(typeDeChambre) == 0)
+							{
+								if (listeHotels[std::stoi(hotelSelectionne)].listeChambres()[i].type() == hotels::typeChambre::Single)
+								{
+									bool test = listeHotels[std::stoi(hotelSelectionne)].verifierReservation(listeHotels[std::stoi(hotelSelectionne)].listeChambres()[i].ID(), beginDate, endDate);
+
+									if (test == true)
+									{
+										// La chambre est dispo
+										std::cout << "The room n." << listeHotels[std::stoi(hotelSelectionne)].listeChambres()[i].ID() << " is available." << std::endl;
+										trouve = 1;
+										typeChambreBool = true;
+									}
+								}
+							}
+							else if (std::stoi(typeDeChambre) == 1)
+							{
+								if (listeHotels[std::stoi(hotelSelectionne)].listeChambres()[i].type() == hotels::typeChambre::Double)
+								{
+									bool test = listeHotels[std::stoi(hotelSelectionne)].verifierReservation(listeHotels[std::stoi(hotelSelectionne)].listeChambres()[i].ID(), beginDate, endDate);
+
+									if (test == true)
+									{
+										// La chambre est dispo
+										std::cout << "The room n." << listeHotels[std::stoi(hotelSelectionne)].listeChambres()[i].ID() << " is available." << std::endl;
+										trouve = 1;
+										typeChambreBool = true;
+									}
+								}
+							}
+							else if (std::stoi(typeDeChambre) == 2)
+							{
+								if (listeHotels[std::stoi(hotelSelectionne)].listeChambres()[i].type() == hotels::typeChambre::Suite)
+								{
+									bool test = listeHotels[std::stoi(hotelSelectionne)].verifierReservation(listeHotels[std::stoi(hotelSelectionne)].listeChambres()[i].ID(), beginDate, endDate);
+
+									if (test == true)
+									{
+										// La chambre est dispo
+										std::cout << "The room n." << listeHotels[std::stoi(hotelSelectionne)].listeChambres()[i].ID() << " is available." << std::endl;
+										trouve = 1;
+										typeChambreBool = true;
+									}
+								}
+							}
+						}
+
+						if (trouve == 0)
+						{
+							std::cout << "Room type is not available." << std::endl;
+						}
+						else
+						{
+							std::cout << std::endl << "Select a room by its number : ";
+							std::getline(std::cin, numChambreSelected);
+							std::cout << "You selected the room n. " << std::stoi(numChambreSelected) << std::endl;
+						}
 			
+					}
+				}
+
+				// On chosit le client
+				std::string nomClient;
+				std::cout << std::endl << "Enter client's last name : ";
+				std::getline(std::cin, nomClient);
+
+				// On parcourt les clients et on affiche ceux qui ont le même nom
+				std::vector<int> clientOkID;
+				int clientOk = 0;
+
+				for (int i = 0; i < listeClients.size(); i++)
+				{
+					if (listeClients[i].nom() == nomClient)
+					{
+						std::cout << clientOk << " - " << listeClients[i].nomComplet() << std::endl;
+						clientOkID.push_back(i);
+						clientOk++;
+					}
+				}
+
+				std::string selectedClient;
+				std::cout << std::endl << "Select a client by its ID : ";
+				std::getline(std::cin, selectedClient);
+
+				float price = tailleSejourComplet * listeHotels[std::stoi(hotelSelectionne)].listeChambres()[std::stoi(numChambreSelected) - 1].prix();
+
+				std::cout << std::endl << "Total price : " << price << "$" << std::endl << std::endl << "Room reservation done!" << std::endl;
+
+				// On ajoute la réservation à la liste de réservations de l'hôtel
+				bookID++;
+				hotels::Booking maNouvelleReservation(bookID, beginDate, endDate, std::stoi(numChambreSelected), listeClients[clientOkID[std::stoi(selectedClient)]].ID(), price, false);
+				listeHotels[std::stoi(hotelSelectionne)].ajouterReservation(maNouvelleReservation);
+				listeClients[clientOkID[std::stoi(selectedClient)]].ajouterReservation(bookID);
 			}
 		}
-
-
-		// QUESTION 9A
-		std::string nomClient;
-		std::cout << "Saisissez le nom du client: ";
-		std::cin >> nomClient;
-
-
-		// QUESTION 9B
-
-		// On parcourt les clients et on affiche ceux qui ont le même nom
-		std::vector<int> clientOkID;
-		int clientOk = 0;
-
-		for (int i = 0; i < customersList.size(); i++)
+		// Faire une réservation
+		else if (commande == "booking list")
 		{
-			if (customersList[i].getLastName() == nomClient)
+			if (std::stoi(hotelSelectionne) == -1)
 			{
-				std::cout << clientOk << ". " << customersList[i].getFullName() << std::endl;
-				clientOkID.push_back(i);
-				clientOk++;
+				std::cout << "No selected hostel" << std::endl;
+			}
+			else if (listeHotels[std::stoi(hotelSelectionne)].nombreReservations() == 0)
+			{
+				std::cout << "No booking is available." << std::endl;
+			}
+			else
+			{
+				listeHotels[std::stoi(hotelSelectionne)].reservations();
+			}
+			std::cout << std::endl;
+		}
+		// Faire une réservation
+		else if (commande == "booking cancel")
+		{
+			if (std::stoi(hotelSelectionne) == -1)
+			{
+				std::cout << "No selected hostel" << std::endl;
+			}
+			else if (listeHotels[std::stoi(hotelSelectionne)].nombreReservations() == 0)
+			{
+				std::cout << "No booking is available." << std::endl;
+			}
+			else
+			{
+				listeHotels[std::stoi(hotelSelectionne)].reservations();
+				std::cout << std::endl << "Select a booking by its ID : ";
+				std::string resaSelectionnee;
+				std:getline(std::cin, resaSelectionnee);
+
+				listeHotels[std::stoi(hotelSelectionne)].annulerReservation(std::stoi(resaSelectionnee));
+
+				std::cout << "Booking canceled." << std::endl << std::endl;
 			}
 		}
+		// Efface la console
+		else if (commande == "clear")
+		{
+			system("clear");
+			std::cout << "HOSTEL MANAGER" << std::endl << std::endl;
+		}
+		// Affiche le menu d'aide
+		else if (commande == "help")
+		{
+			std::cout << "HELP MENU" << std::endl << std::endl;
+			std::cout << "hostel add     - Add an hostel" << std::endl;
+			std::cout << "hostel select  - Select an hostel" << std::endl;
+			std::cout << "hostel current - Show selected hostel" << std::endl;
+			std::cout << "hostel list    - List hostels" << std::endl;
+			std::cout << "hostel remove  - Remove an hostel" << std::endl << std::endl;
+			
+			std::cout << "room add       - Add a room" << std::endl;
+			std::cout << "room list      - List rooms" << std::endl;
+			std::cout << "room edit      - Edit a specific room" << std::endl;
+			std::cout << "room remove    - Remove a room" << std::endl << std::endl;
 
-		int selectedClient;
-		std::cout << "Choisir un client: ";
-		std::cin >> selectedClient;
+			std::cout << "client add     - Add a client" << std::endl;
+			std::cout << "client list    - List clients" << std::endl;
+			std::cout << "client edit    - Edit a specific client" << std::endl;
+			std::cout << "client remove  - Remove a client" << std::endl << std::endl;
 
+			std::cout << "booking make   - Add a booking" << std::endl;
+			std::cout << "booking list   - List bookings" << std::endl;
+			std::cout << "booking cancel - Cancel a booking" << std::endl << std::endl;
 
-		// QUESTION 9C
-		std::cout << std::endl << customersList[clientOkID[selectedClient]];
-
-
-
-		// QUESTION 10A
-		float price = tailleSejourComplet * monHotel.getRoomList()[numChambreSelected].getPrice();
-		std::cout << "Prix total du séjour: " << price << "€" << std::endl;
-
-
-		// On ajoute la résa à la liste de réservations de l'hôtel
-		bookID++;
-		hotels::Booking myNewBook(bookID, startDate, endDate, numChambreSelected, customersList[clientOkID[selectedClient]].getID(), price);
-		monHotel.bkManager.addBooking(myNewBook);
-
-		std::cout << std::endl;
-
-		monHotel.bkManager.showBookings();
-
+			std::cout << "clear          - Clear the console" << std::endl << std::endl;
+			
+			std::cout << "exit           - Leave Hostel Manager" << std::endl << std::endl;
+		}
+		// Commande introuvable
+		else
+		{
+			std::cout << "Command not found. Type \"help\" for help." << std::endl;
+		}
 	}
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-
-
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	return 0;
 }

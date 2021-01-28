@@ -5,8 +5,8 @@
 namespace hotels
 {
 	
-	Booking::Booking(const int id, const date::Date beginDate, const date::Date leftDate, const int roomID, const int clientID, const float price)
-	: _uniqueID(id), _beginDate(beginDate), _leftDate(leftDate), _roomID(roomID), _clientID(clientID), _price(price)
+	Booking::Booking(const int id, const date::Date beginDate, const date::Date leftDate, const int roomID, const int clientID, const float price, const bool canceled)
+	: _uniqueID(id), _beginDate(beginDate), _leftDate(leftDate), _roomID(roomID), _clientID(clientID), _price(price), _canceled(canceled)
 	{
 
 	}
@@ -41,6 +41,11 @@ namespace hotels
 		return _price;
 	}
 
+	int Booking::getCancel() const
+	{
+		return _canceled;
+	}
+
 	void Booking::setBeginDate(const date::Date beginDate)
 	{
 		_beginDate = beginDate;
@@ -64,6 +69,11 @@ namespace hotels
 	void Booking::setPrice(const float price)
 	{
 		_price = price;
+	}
+
+	void Booking::cancel()
+	{
+		_canceled = true;
 	}
 
 }

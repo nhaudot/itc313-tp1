@@ -3,63 +3,61 @@
 
 namespace hotels
 {
-	// Constructeur
-	Chambre::Chambre(int id, roomType type, float price)
-	: _id(id) , _type(type) , _price(price)
+	Chambre::Chambre(int ID, typeChambre type, float prix)
+	: _ID(ID) , _type(type) , _prix(prix)
 	{
 
 	}
 	
-	// Getters
-	int Chambre::getId() const
+	int Chambre::ID() const
 	{
-		return _id;
+		return _ID;
 	}
 
-	roomType Chambre::getType() const
+	typeChambre Chambre::type() const
 	{
 		return _type;
 	}
 
-	float Chambre::getPrice() const
+	float Chambre::prix() const
 	{
-		return _price;
+		return _prix;
 	}
 
 	// Setters
-	void Chambre::setId(int id)
+	void Chambre::setID(int ID)
 	{
-		_id = id;
+		_ID = ID;
 	}
 
-	void Chambre::setType(roomType type)
+	void Chambre::setType(typeChambre type)
 	{
 		_type = type;
 	}
 
-	void Chambre::setPrice(float price)
+	void Chambre::setPrix(float prix)
 	{
-		_price = price;
+		_prix = prix;
 	}
 
 	std::ostream& operator<<(std::ostream& os, const Chambre& chambre)
 	{
 		std::string typeChambre;
 
-		if (chambre.getType() == 0)
+		if (chambre.type() == 0)
 		{
 			typeChambre = "Single";
 		}
-		else if (chambre.getType() == 1)
+		else if (chambre.type() == 1)
 		{
 			typeChambre = "Double";
 		}
-		else if (chambre.getType() == 2)
+		else if (chambre.type() == 2)
 		{
 			typeChambre = "Suite";
 		}
 
-		os << "Chambre n." << chambre.getId() << " : " << typeChambre << " (" << chambre.getPrice() << ")" << std::endl;
+		os << "Chambre n." << chambre.ID() << " : " << typeChambre << " (" << chambre.prix() << "$)" << std::endl;
 
 		return os;
 	}

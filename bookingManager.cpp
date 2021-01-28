@@ -15,23 +15,35 @@ namespace hotels
 
 		for(int i = 0; i < bookingList.size(); i++)
 		{
-			std::cout << "[" << bookingList[i].getID() << "] " << bookingList[i].getBeginDate().toString() << " -> " << bookingList[i].getLeftDate().toString() << " | Chambre n." << bookingList[i].getRoomID() << " | Client n." << bookingList[i].getClientID() << " | Prix total: " << bookingList[i].getPrice() << "€" << std::endl;
+			std::cout << "[" << bookingList[i].getID() << "] " << bookingList[i].getBeginDate().toString() << " -> " << bookingList[i].getLeftDate().toString() << " | Chambre n." << bookingList[i].getRoomID() << " | Client n." << bookingList[i].getClientID() << " | Prix total: " << bookingList[i].getPrice() << "€ | Annulé: " << bookingList[i].getCancel() << std::endl;
 		}
 	}
 
 	void BookingManager::showBooking(int id) const
 	{
-
+		for (int i = 0; i < bookingList.size(); i++)
+		{
+			if (bookingList[i].getID() == id)
+			{
+				std::cout << "[" << bookingList[i].getID() << "] " << bookingList[i].getBeginDate().toString() << " -> " << bookingList[i].getLeftDate().toString() << " | Chambre n." << bookingList[i].getRoomID() << " | Client n." << bookingList[i].getClientID() << " | Prix total: " << bookingList[i].getPrice() << "€ | Annulé: " << bookingList[i].getCancel() << std::endl;
+			}
+		}
 	}
 
 	void BookingManager::showClientBooking(std::string clientName) const
 	{
-
+		
 	}
 
 	void BookingManager::showClientBooking(int clientID) const
 	{
-
+		for (int i = 0; i < bookingList.size(); i++)
+		{
+			if (bookingList[i].getClientID() == clientID)
+			{
+				std::cout << "[" << bookingList[i].getID() << "] " << bookingList[i].getBeginDate().toString() << " -> " << bookingList[i].getLeftDate().toString() << " | Chambre n." << bookingList[i].getRoomID() << " | Client n." << bookingList[i].getClientID() << " | Prix total: " << bookingList[i].getPrice() << "€ | Annulé: " << bookingList[i].getCancel() << std::endl;
+			}
+		}
 	}
 
 	void BookingManager::addBooking(Booking& newBooking)
@@ -46,7 +58,13 @@ namespace hotels
 
 	void BookingManager::cancelBooking(int id)
 	{
-
+		for (int i = 0; i < bookingList.size(); i++)
+		{
+			if (bookingList[i].getID() == id)
+			{
+				bookingList[i].cancel();
+			}
+		}
 	}
 
 	bool BookingManager::checkBooking(int numChambreSelected, date::Date& startDate, date::Date& endDate) const
@@ -56,7 +74,7 @@ namespace hotels
 
 		for (int i = 0; i < bookingList.size(); i++)
 		{
-			if (bookingList[i].getRoomID() == numChambreSelected)
+			if (bookingList[i].getRoomID() == numChambreSelected && bookingList[i].getCancel() == false)
 			{
 				checkRoom = true;
 

@@ -1,62 +1,58 @@
 #include <iostream>
 #include "client.h"
 
-
 namespace hotels
 {
-// Constructeur
-	Client::Client(int id, std::string firstName, std::string lastName, int booking)
-	: _id(id) , _firstName(firstName) , _lastName(lastName) , _booking(booking)
+	Client::Client(int id, std::string prenom, std::string nom, int reservations)
+	: _id(id) , _prenom(prenom) , _nom(nom) , _reservations(reservations)
 	{
 
 	}
 
-// Getters
-	int Client::getID() const
+	int Client::ID() const
 	{
 		return _id;
 	}
 
-	std::string Client::getFirstName() const
+	std::string Client::prenom() const
 	{
-		return _firstName;
+		return _prenom;
 	}
 
-	std::string Client::getLastName() const
+	std::string Client::nom() const
 	{
-		return _lastName;
+		return _nom;
 	}
 
-	std::string Client::getFullName() const
+	std::string Client::nomComplet() const
 	{
-		std::string fullName = _firstName + " " + _lastName;
-		return fullName;
+		std::string _nomComplet = _prenom + " " + _nom;
+		return _nomComplet;
 	}
 
-	int Client::getBooking() const
+	int Client::reservations() const
 	{
-		return _booking;
+		return _reservations;
 	}
 
-// Setters
-	void Client::setFirstName(const std::string firstName)
+	void Client::setPrenom(const std::string prenom)
 	{
-		_firstName = firstName;
+		_prenom = prenom;
 	}
 
-	void Client::setLastName(const std::string lastName)
+	void Client::setNom(const std::string nom)
 	{
-		_lastName = lastName;
+		_nom = nom;
 	}
 
-	void Client::addBooking(const int bookingNumber)
+	void Client::ajouterReservation(const int reservations)
 	{
-		_booking += bookingNumber;
+		_reservations += reservations;
 	}
 
 	std::ostream& operator<<(std::ostream& os, const Client& client)
 	{
-		os << "Client n." << client.getID() << " : " << client.getFullName() << " - Réservations: " << client.getBooking() << std::endl;
+		os << "Client n." << client.ID() << " : " << client.nomComplet() << " - Bookings : " << client.reservations() << std::endl;
 
 		return os;
 	}

@@ -167,7 +167,7 @@ namespace date
 	int Date::operator-(const date::Date& date2) const
 	{
 		bool null = false;     // Drapeau pour vérifier si la différence est nulle
-		int length = 0;        // Taille du séjour
+		int length = 0;        // Taille entre les 2 dates
 		bool negative = false; // Drapeau pour savoir si la différence est négative ou positive
 
 
